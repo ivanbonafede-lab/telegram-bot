@@ -1,7 +1,9 @@
 from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes, ConversationHandler
 
-TOKEN = "8262051249:AAEz_51RhbyjfGpbIA1CedUB3iSN7U-EEP4"
+import os
+
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 ADMIN_CHAT_ID = 1115210742
 
 NOME, TELEFONO, SERVIZIO = range(3)
@@ -52,6 +54,11 @@ async def servizio(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     return ConversationHandler.END
+
+if not TOKEN:
+    raise RuntimeError(
+        "Variabile TELEGRAM_BOT_TOKEN non configurata. Impostala nell’ambiente prima di avviare il bot."
+    )
 
 app = ApplicationBuilder().token(TOKEN).build()
 
